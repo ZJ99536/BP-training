@@ -3,15 +3,33 @@ from numpy import loadtxt
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.layers import Dense, Normalization
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
 
-reconstructed_model = keras.models.load_model('model.h5')
-dataset = loadtxt('/home/zhoujin/rpg_time_optimal/my_time_optimal/gate.txt', delimiter=',')
+model = keras.models.load_model('/home/zhoujin/learning/model/model.h5')
+dataset = loadtxt('/home/zhoujin/trajectory-generation/trajectory/gated.txt', delimiter=',')
 # split into input (X) and output (y) variables
-input = dataset[110:120,0:11]
-output = dataset[110:120,11:17]
-# normalizer = Normalization(axis=-1)
-# normalizer.adapt(dataset)
-# dataset = normalizer(dataset)
-print(reconstructed_model.predict(input))
-print(output)
+
+X = dataset[:,0:8]
+y = dataset[:,8:10]
+
+min_max_scaler = MinMaxScaler()
+min_max_scaler.fit(X)
+X = min_max_scaler.transform(X)
+
+min_max_scaler.fit(y)
+remember = min_max_scaler
+y = min_max_scaler.transform(y)
+
+input = X[0:32,0:8]
+output = dataset[0:32,8:10]
+
+ynew = model.predict(input)
+ynew = remember.inverse_transform(ynew)
+
+plt.plot(ynew)
+plt.plot(output)
+plt.show()
+# print(remember.inverse_transform(ynew))
+# print(output)
 

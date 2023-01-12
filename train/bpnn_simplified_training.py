@@ -25,11 +25,11 @@ y = min_max_scaler.transform(y)
 
 # define the keras model
 model = Sequential()
-model.add(Dense(32, input_shape=(8,), activation='relu'))
+model.add(Dense(32, input_shape=(8,), activation='tanh'))
 # model.add(Dense(32, input_shape=(11,), activation='sigmoid'))
-model.add(Dense(32, activation='sigmoid'))
+model.add(Dense(64, activation='tanh'))
 # model.add(Dense(128, activation='sigmoid'))
-model.add(Dense(2, activation='softmax'))
+model.add(Dense(2, activation='linear'))
 model.summary()
 # compile the keras model
 # model.compile(loss = "categorical_crossentropy", optimizer=keras.optimizers.SGD(learning_rate=0.01, momentum=0.9, nesterov=True), metrics=['accuracy'])

@@ -12,8 +12,8 @@ dataset = loadtxt('/home/zhoujin/cloud-communiacation/library/quad1.txt', delimi
 # normalizer = Normalization(axis=-1, invert=True)
 # normalizer.adapt(dataset)
 # dataset = normalizer(dataset)
-X = dataset[:,0:15]
-y = dataset[:,18:33]
+X = dataset[:,3:15]
+y = dataset[:,21:33]
 
 # min_max_scaler = MinMaxScaler()
 # min_max_scaler.fit(X)
@@ -25,23 +25,23 @@ y = dataset[:,18:33]
 
 # define the keras model
 model = Sequential()
-model.add(Dense(100, input_shape=(15,), activation='relu'))
+model.add(Dense(100, input_shape=(12,), activation='relu'))
 # model.add(Dense(32, input_shape=(11,), activation='sigmoid'))
 model.add(Dense(500, activation='softplus'))
-model.add(Dense(500, activation='tanh'))
+model.add(Dense(500, activation='sigmoid'))
 # model.add(Dense(128, activation='sigmoid'))
-model.add(Dense(15, activation='linear'))
+model.add(Dense(12, activation='linear'))
 model.summary()
 # compile the keras model
 # model.compile(loss = "categorical_crossentropy", optimizer=keras.optimizers.SGD(learning_rate=0.01, momentum=0.9, nesterov=True), metrics=['accuracy'])
 model.compile(loss = "mse", optimizer="adam", metrics=['accuracy'])
 # fit the keras model on the dataset
-history = model.fit(X, y, epochs=50, batch_size=480, validation_split=0.2)
+history = model.fit(X, y, epochs=50, batch_size=640, validation_split=0.2)
 # evaluate the keras model
 _, accuracy = model.evaluate(X, y)
 print('Accuracy: %.2f' % (accuracy*100))
 
-model.save('/home/zhoujin/learning/model/quad5_m7.h5')
+model.save('/home/zhoujin/learning/model/quad5_sec.h5')
 
 plt.plot(history.history['loss'])
 plt.show()
